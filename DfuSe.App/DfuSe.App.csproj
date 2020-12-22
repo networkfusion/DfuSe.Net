@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFrameworks>netcoreapp3.1;net5.0</TargetFrameworks>
+    <AssemblyName>DfuSeApp</AssemblyName>
+    <RootNamespace>DfuSeApp</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <Prefer32Bit>true</Prefer32Bit>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="LibUsbDotNet" Version="2.2.29" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DfuSe.Core\DfuSe.Core.csproj" />
+  </ItemGroup>
+
+</Project>
