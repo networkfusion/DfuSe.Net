@@ -2,7 +2,10 @@
 using System.Linq;
 using DfuSe.App.Worker;
 using System.Text;
-using DfuSe.Core;
+//using DfuSe.Core;
+using LibUsbDotNet;
+using LibUsbDotNet.LibUsb;
+using LibUsbDotNet.Main;
 
 namespace DfuSe.App
 {
@@ -18,7 +21,7 @@ namespace DfuSe.App
         {
             using (var context = new UsbContext())
             {
-                context.SetDebugLevel(LogLevel.Info);
+                //context.SetDebugLevel(LogLevel.Info);
 
                 //Get a list of all connected devices
                 var usbDeviceCollection = context.List();
@@ -63,13 +66,13 @@ namespace DfuSe.App
         private static string GetDeviceInfo(IUsbDevice device)
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append("Model: " + device.Info.Device + "\n");
+            //sb.Append("Model: " + device.Info.Device + "\n");
             //sb.Append("ID: " + device.Info.DeviceId + " (0x" + Integer.toHexString(device.getDeviceId()) + ")" + "\n");
-            sb.Append("Class: " + device.Info.DeviceClass + "\n");
-            sb.Append("Subclass: " + device.Info.DeviceSubClass + "\n");
-            sb.Append("Protocol: " + device.Info.DeviceProtocol + "\n");
-            sb.Append("Vendor ID " + device.Info.VendorId + "\n"); //+ " (0x" + Integer.toHexString(device.getVendorId()) + ")" + "\n");
-            sb.Append("Product ID: " + device.Info.ProductId + "\n"); //+ " (0x" + Integer.toHexString(device.getProductId()) + ")" + "\n");
+            //sb.Append("Class: " + device.Info.DeviceClass + "\n");
+            //sb.Append("Subclass: " + device.Info.DeviceSubClass + "\n");
+            //sb.Append("Protocol: " + device.Info.DeviceProtocol + "\n");
+            sb.Append("Vendor ID " + device.Info.Descriptor.VendorID + "\n"); //+ " (0x" + Integer.toHexString(device.getVendorId()) + ")" + "\n");
+            sb.Append("Product ID: " + device.Info.Descriptor.ProductID + "\n"); //+ " (0x" + Integer.toHexString(device.getProductId()) + ")" + "\n");
             //sb.Append("Device Ver: 0x" + Integer.toHexString(mDeviceVersion) + "\n");
             //sb.Append("Interface count: " + device.getInterfaceCount() + "\n");
 

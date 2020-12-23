@@ -20,7 +20,11 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using DfuSe.Core;
+//using DfuSe.Core;
+
+using LibUsbDotNet;
+using LibUsbDotNet.LibUsb;
+using LibUsbDotNet.Main;
 
 //package co.umbrela.tools.stm32dfuprogrammer;
 
@@ -839,6 +843,7 @@ namespace DfuSe.App.Worker
             int wValue = 0x0304;        // possible strings range from 0x304-0x307
 
             //int len = usb.controlTransfer(bmRequest, bRequest, wValue, 0, descriptor, wLength, 500);
+            int len = 0;
             UsbSetupPacket setup = new LibUsbDotNet.Main.UsbSetupPacket()
             {
                 RequestType = (byte)(bmRequest),
@@ -846,7 +851,7 @@ namespace DfuSe.App.Worker
                 Value = (short)wValue,
                 Index = 0
             };
-            var len = usb.ControlTransfer(setup, descriptor, 0 , wLength);
+            usb.ControlTransfer(ref setup, descriptor, 0 , out len);
 
             if (len < 0)
             {
@@ -1044,7 +1049,7 @@ namespace DfuSe.App.Worker
                 Value = 0,
                 Index = 0
             };
-            int length = usb.ControlTransfer(setup, buffer, 0, 6);
+            int length = usb.ControlTransfer(ref setup, buffer, 0, 6);
 
             if (length < 0)
             {
@@ -1067,7 +1072,7 @@ namespace DfuSe.App.Worker
                 Value = 0,
                 Index = 0
             };
-            int length = usb.ControlTransfer(setup, null, 0, 0);
+            int length = usb.ControlTransfer(ref setup, null, 0, 0);
 
             if (length < 0)
             {
@@ -1079,6 +1084,7 @@ namespace DfuSe.App.Worker
         private void Download(byte[] data) //throws Exception
         {
             //int len = usb.controlTransfer(DFU_RequestType, DFU_DNLOAD, 0, 0, data, data.Length, 50);
+            int len = 0;
             LibUsbDotNet.Main.UsbSetupPacket setup = new LibUsbDotNet.Main.UsbSetupPacket()
             {
                 RequestType = (byte)(DFU_RequestType),
@@ -1086,7 +1092,7 @@ namespace DfuSe.App.Worker
                 Value = 0,
                 Index = 0
             };
-            int len = usb.ControlTransfer(setup, data, 0, data.Length);
+            usb.ControlTransfer(ref setup, data, 0, out len);
 
             if (len < 0)
             {
@@ -1105,7 +1111,7 @@ namespace DfuSe.App.Worker
                 Value = (short)nBlock,
                 Index = 0
             };
-            int len = usb.ControlTransfer(setup, data, 0, data.Length);
+            int len = usb.ControlTransfer(ref setup, data, 0, data.Length);
 
             if (len < 0)
             {
@@ -1139,6 +1145,7 @@ namespace DfuSe.App.Worker
         private void Upload(byte[] data, int length, int blockNum) //throws Exception
         {
             //int len = usb.controlTransfer(DFU_RequestType | USB_DIR_IN, DFU_UPLOAD, blockNum, 0, data, length, 100);
+            int len = 0;
             LibUsbDotNet.Main.UsbSetupPacket setup = new LibUsbDotNet.Main.UsbSetupPacket()
             {
                 RequestType = (byte)(DFU_RequestType | USB_DIR_IN),
@@ -1146,7 +1153,7 @@ namespace DfuSe.App.Worker
                 Value = (short)blockNum,
                 Index = 0
             };
-            int len = usb.ControlTransfer(setup, data, 0, length);
+            usb.ControlTransfer(ref setup, data, 0, out len);
 
             if (len < 0)
             {
